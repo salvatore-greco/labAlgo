@@ -7,7 +7,6 @@ from baseDS.DataStructure import DataStructure
 class BST(DataStructure):
     def __init__(self):
         self._root = None
-        self._current = None
 
     def getRoot(self):
         return self._root
@@ -132,10 +131,12 @@ class BST(DataStructure):
 
     #definisco iteratore e next per scorrere l'albero (in senso inorder) per scorrere il dizionario successivamente
     def __iter__(self):
-        self._current = self._root
-        return self._root
+        self._current = self.treeMinimum()
+        return self
+
     def __next__(self):
-        self._current = self.treeSuccessor(self._current)
         if self._current is None:
             raise StopIteration
-        return self._current
+        oldCurrent = self._current
+        self._current = self.treeSuccessor(self._current)
+        return oldCurrent

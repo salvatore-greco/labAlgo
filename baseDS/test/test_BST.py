@@ -10,8 +10,8 @@ class InsertTest(unittest.TestCase):
     def helper_traverse_tree(self, root): #è tipo una preorder ma che ritorna le chiavi, ganzo
         if root is not None:
             yield root.getKey()
-            self.helper_traverse_tree(root.getLeft())
-            self.helper_traverse_tree(root.getRight())
+            yield from self.helper_traverse_tree(root.getLeft())
+            yield from self.helper_traverse_tree(root.getRight())
 
     def test_insert(self):
         # L'albero l'ho scritto sulla mia fantastica lavagnetta, lo riporto con la notazione parentesizzata
@@ -65,6 +65,22 @@ class OtherTest(unittest.TestCase):
         key = self.tree.treeSuccessor(self.tree.search(91))
         if key is not None: key = key.getKey()
         self.assertIsNone(key)
+
+    def helper_inorder_tree(self, root):
+        if root is not None:
+            yield from self.helper_inorder_tree(root.getLeft())
+            yield root.getKey()
+            yield from self.helper_inorder_tree(root.getRight())
+
+    def test_iterator(self):
+        l = []
+        for i in self.tree:
+            l.append(i.getKey())
+
+        #print (l)
+        iterator = iter(l)
+        for item in self.helper_inorder_tree(self.tree.getRoot()):
+            self.assertEqual(item, next(iterator))
 
 
 if __name__ == '__main__':
