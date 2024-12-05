@@ -1,26 +1,13 @@
 from HashFunction import h
-from baseDS.DataStructure import DataStructure
+from baseDS.DataStructure import DataStructure, DataStructureElement
 from typing import List
 
 # TODO: Testare questa fantastica struttura dati (come hai fatto con le altre)
 
-class Element:
+class Element(DataStructureElement):
     def __init__(self, key, value):
-        self._key = key
-        self._value = value
+        super().__init__(key, value)
         self._deleted = False
-
-    def getKey(self):
-        return self._key
-
-    def getValue(self):
-        return self._value
-
-    def setKey(self, newKey):
-        self._key = newKey
-
-    def setValue(self, newValue):
-        self._value = newValue
 
     def isDeleted(self):
         return self._deleted
@@ -122,9 +109,9 @@ class HashTable(DataStructure):
 
     def _hashDelete(self, target):
         try:
-            keyPosition = self.search(target)
+            elementToDelete = self.search(target)
             self._numberOfDeletedElement += 1
-            self._table[keyPosition].setDeleted(True)
+            elementToDelete.setDeleted(True)
             return True
         except KeyError:
             return False
@@ -139,7 +126,7 @@ class HashTable(DataStructure):
         for i in range(0, self._m):
             hashKey = h(target, i, self._m)
             if self._table[hashKey].getKey() == target:
-                return hashKey
+                return self._table[hashKey]
             if self._table[hashKey] is None:
                 raise KeyError
 

@@ -1,16 +1,12 @@
 # Chissà se questo type checking sarà giusto
-class Element:
+from baseDS.DataStructure import DataStructureElement, DataStructure
+
+
+class Element(DataStructureElement):
     def __init__(self, key, value):
-        self._key = key  # dato che devo implementare un dizionario, suppongo (ai fini del dizionario appunto) che questa chiave sia unica
-        self._value = value
+        super().__init__(key,value)  # dato che devo implementare un dizionario, suppongo (ai fini del dizionario appunto) che questa chiave sia unica
         self._next: Element | None = None
         self._prev: Element | None = None
-
-    def getKey(self):
-        return self._key
-
-    def getValue(self):
-        return self._value
 
     def getNext(self):
         return self._next
@@ -25,25 +21,30 @@ class Element:
         self._prev = newPrev
 
 
-class LinkedList:
+
+class LinkedList(DataStructure):
+
     # Ipotizziamo che non abbiamo il puntatore alla fine della lista.
     def __init__(self):
-        self.head: Element | None = None
+        self._head: Element | None = None
+
+    def getHead(self):
+        return self._head
 
     def insert(self, element: Element):
-        if self.head is None:
-            self.head = element
+        if self._head is None:
+            self._head = element
         else:
-            element.setNext(self.head)
-            self.head.setPrev(element)
-            self.head = element
+            element.setNext(self._head)
+            self._head.setPrev(element)
+            self._head = element
 
     def search(self, target) -> Element:
-        x = self.head
+        x = self._head
         while x is not None and x.getKey() != target:
             x = x.getNext()
         if x is None: raise KeyError
-        return x  # se x è none significa che l'elemento non è presente (potrei lanciare un eccezione ma boh)
+        return x
 
     def delete(self, target):
         """
@@ -51,10 +52,21 @@ class LinkedList:
         :param target: chiave da eliminare
         """
         x = self.search(target)  # l'eccezione voglio che venga gestita da chi chiama delete
-        if x is self.head:
+        if x is self._head:
             x.getNext().setPrev(None)
-            self.head = x.getNext()
+            self._head = x.getNext()
         else:
             x.getPrev().setNext(x.getNext())
             if x.getNext() is not None:
                 x.getNext().setPrev(x.getPrev())
+
+    def __iter__(self):
+        self._current = self._head
+        return self
+
+    def __next__(self):
+        if self._current is None:
+            raise StopIteration
+        current = self._current
+        self._current = self._current.getNext()
+        return current

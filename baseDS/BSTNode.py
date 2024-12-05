@@ -1,16 +1,15 @@
-class BSTNode:
+from baseDS.DataStructure import DataStructureElement
+
+
+class BSTNode(DataStructureElement):
     def __init__(self, key, value):
-        self._key = key
-        self._value = value
+        super().__init__(key, value)
         self._p = None
         self._left = None
         self._right = None
 
     def get(self):
         return self._key, self._value
-
-    def getKey(self):
-        return self._key
 
     def set(self, key, value=None):
         self._key = key
