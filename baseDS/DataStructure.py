@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class DataStructureElement:
 
     def __init__(self, key, value):
@@ -8,12 +9,16 @@ class DataStructureElement:
 
     def getKey(self):
         return self._key
+
     def getValue(self):
         return self._value
+
     def setKey(self, newKey):
         self._key = newKey
+
     def setValue(self, newValue):
         self._value = newValue
+
 
 class DataStructure(ABC):
     @abstractmethod
@@ -31,6 +36,7 @@ class DataStructure(ABC):
     @abstractmethod
     def __iter__(self):
         """Returns the iterator of the data structure"""
+
     @abstractmethod
     def __next__(self):
         """Return the next element of the data structure from the iterator"""

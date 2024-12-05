@@ -126,10 +126,10 @@ class BST(DataStructure):
             y = start.getP()
             while y is not None and start is y.getRight():
                 start = y
-                y = start.getP() #non vorrei cambiasse anche il valore di start...
+                y = start.getP()  # non vorrei cambiasse anche il valore di start...
             return y
 
-    #definisco iteratore e next per scorrere l'albero (in senso inorder) per scorrere il dizionario successivamente
+    # definisco iteratore e next per scorrere l'albero (in senso inorder) per scorrere il dizionario successivamente
     def __iter__(self):
         self._current = self.treeMinimum()
         return self

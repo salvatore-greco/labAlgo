@@ -68,7 +68,9 @@ class HashTable(DataStructure):
         Funzione che inserisce un elemento nella hash table
         :param element: Elemento (tipo Element) da inserire
         """
-        # Non posso seguire lo pseudocodice di pagina 387 perchè usando il doppio hash, voglio che m sia sempre una potenza del 2
+
+        # Non posso seguire lo pseudocodice di pagina 387 perchè usando il doppio hash, voglio che m sia sempre una
+        # potenza del 2
         if self._loadFactor > 0.5:  # quindi deve essere sempre minore di 0.7 (costante <1)
             self._moveToNewTable(self._m * 2)
         self._hashInsert(element)
@@ -133,7 +135,6 @@ class HashTable(DataStructure):
             elif self._table[hashKey].getKey() == target:
                 return self._table[hashKey]
 
-
     def __iter__(self):
         self._current = 0
         return self
@@ -145,4 +146,3 @@ class HashTable(DataStructure):
             if current_value is not None:
                 return current_value
         raise StopIteration
-

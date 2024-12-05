@@ -3,17 +3,20 @@ from baseDS.DataStructure import DataStructure, DataStructureElement
 
 class Dictionary(DataStructure):
 
-    def __init__(self, baseDS:DataStructure):
-        self._baseDS :DataStructure = baseDS
+    def __init__(self, baseDS: DataStructure):
+        self._baseDS: DataStructure = baseDS
 
     def insert(self, element: DataStructureElement):
         self._baseDS.insert(element)
 
+    def insertKV(self, key, value):
+        self._baseDS.insert(DataStructureElement(key, value))
+
     def search(self, target):
-        return self._baseDS.search(target) #gestire l'eccezione
+        return self._baseDS.search(target)  # gestire l'eccezione
 
     def delete(self, target):
-        self._baseDS.delete(target) #gestire l'eccezione
+        self._baseDS.delete(target)  # gestire l'eccezione
 
     def __iter__(self):
         self._iterator = iter(self._baseDS)

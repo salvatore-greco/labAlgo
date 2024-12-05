@@ -4,7 +4,8 @@ from baseDS.DataStructure import DataStructureElement, DataStructure
 
 class Element(DataStructureElement):
     def __init__(self, key, value):
-        super().__init__(key,value)  # dato che devo implementare un dizionario, suppongo (ai fini del dizionario appunto) che questa chiave sia unica
+        super().__init__(key,
+                         value)  # dato che devo implementare un dizionario, suppongo (ai fini del dizionario appunto) che questa chiave sia unica
         self._next: Element | None = None
         self._prev: Element | None = None
 
@@ -21,7 +22,6 @@ class Element(DataStructureElement):
         self._prev = newPrev
 
 
-
 class LinkedList(DataStructure):
 
     # Ipotizziamo che non abbiamo il puntatore alla fine della lista.
@@ -32,6 +32,7 @@ class LinkedList(DataStructure):
         return self._head
 
     def insert(self, element: Element):
+
         if self._head is None:
             self._head = element
         else:
