@@ -1,6 +1,7 @@
-from HashFunction import h
+from baseDS.HashFunction import h
 from baseDS.DataStructure import DataStructure, DataStructureElement
 from typing import List
+
 
 # TODO: Testare questa fantastica struttura dati (come hai fatto con le altre)
 
@@ -22,7 +23,8 @@ class HashTable(DataStructure):
         self._m = 2
         self._n = 0  # Size
         self._numberOfDeletedElement = 0
-        self._table: List[Element] | List[None] = [None] * self._m  # uso la lista di python perchè sì. Per inserire o accedere alla lista non uso i metodi di python ma [] perchè è tempo costante
+        self._table: List[Element] | List[None] = [
+                                                      None] * self._m  # uso la lista di python perchè sì. Per inserire o accedere alla lista non uso i metodi di python ma [] perchè è tempo costante
         self._loadFactor = 0
 
     def _calcLoadFactor(self):
@@ -40,7 +42,7 @@ class HashTable(DataStructure):
         Importante perchè i tempi di ricerca dipenderanno da questo fattore di carico
         invece che da self._loadFactor
         """
-        self.loadFactorWithDeletion = self._numberOfDeletedElement / self._m
+        self.loadFactorWithDeletion = (self._n + self._numberOfDeletedElement) / self._m
 
     def _moveToNewTable(self, newDimension):
         newTable = [None] * newDimension
@@ -59,7 +61,7 @@ class HashTable(DataStructure):
                     i += 1
         del self._table
         self._table = newTable
-        self.m = newDimension
+        self._m = newDimension
 
     def insert(self, element):
         """
@@ -67,7 +69,7 @@ class HashTable(DataStructure):
         :param element: Elemento (tipo Element) da inserire
         """
         # Non posso seguire lo pseudocodice di pagina 387 perchè usando il doppio hash, voglio che m sia sempre una potenza del 2
-        if self._loadFactor > 0.7:  # quindi deve essere sempre minore di 0.7 (costante <1)
+        if self._loadFactor > 0.5:  # quindi deve essere sempre minore di 0.7 (costante <1)
             self._moveToNewTable(self._m * 2)
         self._hashInsert(element)
         self._n += 1
@@ -100,7 +102,8 @@ class HashTable(DataStructure):
         while i != self._m:
             keyHash = h(element.getKey(), i, self._m)
             if self._table[keyHash] is None or self._table[keyHash].isDeleted():
-                if self._table[keyHash].isDeleted(): self._numberOfDeletedElement -= 1
+                if self._table[keyHash] is not None and self._table[keyHash].isDeleted():
+                    self._numberOfDeletedElement -= 1
                 self._table[keyHash] = element
                 return
             else:
@@ -125,21 +128,21 @@ class HashTable(DataStructure):
 
         for i in range(0, self._m):
             hashKey = h(target, i, self._m)
-            if self._table[hashKey].getKey() == target:
-                return self._table[hashKey]
-            if self._table[hashKey] is None:
+            if self._table[hashKey] is None or self._table[hashKey].isDeleted():
                 raise KeyError
+            elif self._table[hashKey].getKey() == target:
+                return self._table[hashKey]
+
 
     def __iter__(self):
-        for i in range(0, len(self._table)):
-            if self._table[i] is not None:
-                self._current = i
+        self._current = 0
         return self
 
     def __next__(self) -> Element:
-        if self._current is None: raise StopIteration
-        for i in range(self._current, len(self._table)):
-            if self._table[i] is not None:
-                self._current = i
-                return self._table[i]
+        while self._current < len(self._table):
+            current_value = self._table[self._current]
+            self._current += 1
+            if current_value is not None:
+                return current_value
         raise StopIteration
+
