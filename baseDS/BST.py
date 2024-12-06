@@ -33,7 +33,7 @@ class BST(DataStructure):
         else:
             y.setRight(node)
 
-    def insertKeyValue(self, key, value):
+    def insertKV(self, key, value):
         """
         Inserisce un nodo nell'ABR
         :param key: chiave del nodo da inserire

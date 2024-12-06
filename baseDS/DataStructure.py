@@ -26,6 +26,10 @@ class DataStructure(ABC):
         """Insert element in the data structure"""
 
     @abstractmethod
+    def insertKV(self, key, value):
+        """Insert an element by passing key and value."""
+
+    @abstractmethod
     def search(self, target) -> DataStructureElement:
         """Search target in the data structure"""
 

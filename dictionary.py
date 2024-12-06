@@ -10,7 +10,7 @@ class Dictionary(DataStructure):
         self._baseDS.insert(element)
 
     def insertKV(self, key, value):
-        self._baseDS.insert(DataStructureElement(key, value))
+        self._baseDS.insertKV(key, value)
 
     def search(self, target):
         return self._baseDS.search(target)  # gestire l'eccezione

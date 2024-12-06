@@ -63,6 +63,9 @@ class HashTable(DataStructure):
         self._table = newTable
         self._m = newDimension
 
+    def insertKV(self, key, value):
+        self.insert(Element(key, value))
+
     def insert(self, element):
         """
         Funzione che inserisce un elemento nella hash table
