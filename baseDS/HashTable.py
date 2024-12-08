@@ -74,7 +74,7 @@ class HashTable(DataStructure):
 
         # Non posso seguire lo pseudocodice di pagina 387 perchè usando il doppio hash, voglio che m sia sempre una
         # potenza del 2
-        if self._loadFactor > 0.5:  # quindi deve essere sempre minore di 0.7 (costante <1)
+        if self._loadFactor > 0.7:  # quindi deve essere sempre minore di 0.7 (costante <1)
             self._moveToNewTable(self._m * 2)
         self._hashInsert(element)
         self._n += 1
