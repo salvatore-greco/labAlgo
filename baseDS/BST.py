@@ -140,3 +140,6 @@ class BST(DataStructure):
         oldCurrent = self._current
         self._current = self.treeSuccessor(self._current)
         return oldCurrent
+
+    def __str__(self):
+        return 'Binary Search Tree'

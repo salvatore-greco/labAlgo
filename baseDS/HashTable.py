@@ -149,3 +149,6 @@ class HashTable(DataStructure):
             if current_value is not None:
                 return current_value
         raise StopIteration
+
+    def __str__(self):
+        return 'Hash Table'
