@@ -42,7 +42,10 @@ class HashTable(DataStructure):
         Importante perchè i tempi di ricerca dipenderanno da questo fattore di carico
         invece che da self._loadFactor
         """
-        self.loadFactorWithDeletion = (self._n + self._numberOfDeletedElement) / self._m
+        self._loadFactorWithDeletion = (self._n + self._numberOfDeletedElement) / self._m
+
+    def getLoadFactors(self):
+        return self._loadFactor, self._loadFactorWithDeletion
 
     def _moveToNewTable(self, newDimension):
         newTable = [None] * newDimension

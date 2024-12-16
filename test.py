@@ -1,5 +1,5 @@
 from timeit import default_timer as timer
-import numpy as np
+from baseDS.HashTable import HashTable
 
 from dictionary import Dictionary
 
@@ -23,9 +23,15 @@ def testSearch(dictionary: Dictionary, key):
         dictionary.search(key)
         end = timer()
         result = {'time': end - start, 'success': True, 'size': dictionary.size}
+        if isinstance(dictionary._baseDS, HashTable):
+            (loadfactor,_) = dictionary._baseDS.getLoadFactors()
+            result['loadFactor'] = loadfactor
     except KeyError:
         end = timer()
         result = {'time': end - start, 'success': False, 'size': dictionary.size}
+        if isinstance(dictionary._baseDS, HashTable):
+            (loadfactor,_) = dictionary._baseDS.getLoadFactors()
+            result['loadFactor'] = loadfactor
     finally:
         return result
 
