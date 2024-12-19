@@ -1,4 +1,7 @@
 from timeit import default_timer as timer
+
+import numpy as np
+
 from baseDS.HashTable import HashTable
 
 from dictionary import Dictionary
@@ -50,3 +53,35 @@ def testDelete(dictionary: Dictionary, key):
         result = {'time': end - start, 'success': False, 'size': dictionary.size}
     finally:
         return result
+
+
+def testAverage(dictionary: Dictionary, function, keys, nIter,*args):
+    """
+    Ritorna una media dei tempi di esecuzione di una particolare funzione e la dimensione del dizionario
+    La misura è fatta ogni volta su un nuovo dizionario
+    :param dictionary: dizionario su cui fare il test
+    :param function: funzione da testare
+    :param parameter: eventuali parametri di function
+    :param keys: chiavi da inserire nel dizionario
+    :param nIter: quante volte prendere la misura
+    :return:
+    """
+    result = {}
+    time = 0
+    for _ in range(nIter):
+        dictionary.clear()
+        for i in range(len(keys)):
+            dictionary.insertKV(keys[i],1)
+        start = timer()
+        try:
+            function(*args)
+        except KeyError:
+            pass
+        finally:
+            end = timer()
+            time += (end-start)
+            size = dictionary.size
+    result['avgTime'] = time / nIter
+    print(f'time/iter: {time/nIter}')
+    result['size'] = size
+    return result
