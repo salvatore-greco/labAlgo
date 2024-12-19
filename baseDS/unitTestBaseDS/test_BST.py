@@ -19,7 +19,7 @@ class InsertTest(unittest.TestCase):
         #se insert funziona lo reinserisco nel setup della prossima fixture :)
         values = [50,20,10,30,25,31,80,79,90,89,91]
         for value in values:
-            self.tree.insertKeyValue(value, 1)
+            self.tree.insertKV(value, 1)
         #self.tree.rootInorderTreeWalk()
 
         #controlliamo sulla struttura dell'albero è corretta
@@ -34,7 +34,7 @@ class OtherTest(unittest.TestCase):
         self.tree = BST()
         values = [50, 20, 10, 30, 25, 31, 80, 79, 90, 89, 91]
         for value in values:
-            self.tree.insertKeyValue(value, 1)
+            self.tree.insertKV(value, 1)
 
     def test_search(self):
         with self.assertRaises(KeyError):
