@@ -7,6 +7,10 @@ class Dictionary(DataStructure):
         self._baseDS: DataStructure = baseDS
         self.size = 0
 
+    def clear(self):
+        self._baseDS = type(self._baseDS)()
+        self.size = 0
+
     def insert(self, element: DataStructureElement):
         self._baseDS.insert(element)
         self.size += 1
