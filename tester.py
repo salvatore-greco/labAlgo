@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from random import randint
 import numpy as np
 import math
+import os
 
 """
 Qui ci scrivo le funzioni per effettivamente testare le prestazioni del dizionario
@@ -26,7 +27,7 @@ def generatePlot(xValue, yValue, plot_title, plot_name, isAvg=False, points=Fals
     else:
         ax.set_ylabel('Tempo')
     print(f"Generating plot {plot_name}")
-    plt.savefig(f"../plot/{plot_name}")
+    plt.savefig(f"./plot/{plot_name}")
 
 
 def generateTwoFuncPlot(xValue, y1Value, y2Value, y1Label, y2Label, plot_title, plot_name, isAvg=False, points=False):
@@ -45,7 +46,7 @@ def generateTwoFuncPlot(xValue, y1Value, y2Value, y1Label, y2Label, plot_title, 
         ax.set_ylabel('Tempo')
     ax.legend()
     print(f"Generating plot {plot_name}")
-    plt.savefig(f"../plot/{plot_name}")
+    plt.savefig(f"./plot/{plot_name}")
 
 
 class Tester:
@@ -57,7 +58,7 @@ class Tester:
         self.deleteSize = deleteSize
         self.minSize = minSize
         self.step = 1000
-        self.stepAvg = 3
+        self.stepAvg = 333
         self.nIter = nIter
 
     def clearDictionary(self):
@@ -142,12 +143,15 @@ class Tester:
             deleteTime.append(testDelete(self.dictionary, keys[randint(0, len(keys) - 1)]))
             size *= self.step
 
-    def insertAvg(self, points):
+    def insertAvg(self, points, ordered = False):
         plot_title = f'Inserimento avg {self.dictionary._baseDS}'
-        plot_name = f"{self.dictionary._baseDS}_insertAvg.png"
+        plot_name = f"{self.dictionary._baseDS}_insertAvg"
         result = []
-        for size in range(self.minSize, 10000, 333):
-            keys = self.dataGenerator.generateKey(size + 1)
+        for size in range(self.minSize, self.insertSize, self.stepAvg):
+            if ordered :
+                keys = np.sort(self.dataGenerator.generateKey(size + 1))
+            else:
+                keys = self.dataGenerator.generateKey(size + 1)
             result.append(
                 testAverage(self.dictionary, self.dictionary.insertKV, keys[:size], self.nIter, keys[size], 1))
         xValue = [i['size'] for i in result]
@@ -162,13 +166,13 @@ class Tester:
         plot_name = f"{self.dictionary._baseDS}_searchAvg.png"
         # Ricerca con successo
         success = []
-        for size in range(self.minSize, 10000, 333):
+        for size in range(self.minSize, self.searchSize, self.stepAvg):
             keys = self.dataGenerator.generateKey(size)
             success.append(
                 testAverage(self.dictionary, self.dictionary.search, keys, self.nIter, keys[randint(0, len(keys) - 1)]))
         # Ricerca senza successo
         unsuccess = []
-        for size in range(self.minSize, 10000, 333):
+        for size in range(self.minSize, self.searchSize, self.stepAvg):
             keys = self.dataGenerator.generateKey(size)
             unsuccess.append(testAverage(self.dictionary, self.dictionary.search, keys, self.nIter, -1))
         xValue = [i['size'] for i in success]
@@ -185,7 +189,7 @@ class Tester:
         plot_title = f'Cancellazione avg {self.dictionary._baseDS}'
         plot_name = f"{self.dictionary._baseDS}_deleteAvg.png"
         result = []
-        for size in range(self.minSize, 10000, 333):
+        for size in range(self.minSize, self.deleteSize, self.stepAvg):
             keys = self.dataGenerator.generateKey(size)
             result.append(
                 testAverage(self.dictionary, self.dictionary.delete, keys, self.nIter, keys[randint(0, len(keys) - 1)]))
