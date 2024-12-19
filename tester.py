@@ -1,13 +1,51 @@
+from baseDS.HashTable import HashTable
 from dataGenerator import DataGenerator
 from test import *
 from dictionary import Dictionary
 import matplotlib.pyplot as plt
 from random import randint
+import numpy as np
+import math
 
 """
 Qui ci scrivo le funzioni per effettivamente testare le prestazioni del dizionario
 Generano i grafici
 """
+
+
+def generatePlot(xValue, yValue, plot_title, plot_name, isAvg=False, points=False):
+    fig, ax = plt.subplots(layout='constrained')
+    ax.set_title(plot_title)
+    if points:
+        ax.plot(xValue, yValue, 'o')
+    else:
+        ax.plot(xValue, yValue)
+    ax.set_xlabel('Numero di elementi')
+    if isAvg:
+        ax.set_ylabel('Tempo medio')
+    else:
+        ax.set_ylabel('Tempo')
+    print(f"Generating plot {plot_name}")
+    plt.savefig(f"../plot/{plot_name}")
+
+
+def generateTwoFuncPlot(xValue, y1Value, y2Value, y1Label, y2Label, plot_title, plot_name, isAvg=False, points=False):
+    fig, ax = plt.subplots()
+    ax.set_title(plot_title)
+    if points:
+        ax.plot(xValue, y1Value, 'o', label=y1Label)
+        ax.plot(xValue, y2Value, 'o', label=y2Label)
+    else:
+        ax.plot(xValue, y1Value, label=y1Label)
+        ax.plot(xValue, y2Value, label=y2Label)
+    ax.set_xlabel('Numero di elementi')
+    if isAvg:
+        ax.set_ylabel('Tempo medio')
+    else:
+        ax.set_ylabel('Tempo')
+    ax.legend()
+    print(f"Generating plot {plot_name}")
+    plt.savefig(f"../plot/{plot_name}")
 
 
 class Tester:
@@ -58,8 +96,6 @@ class Tester:
         # Ricerca senza successo
         self.search_helper(searchTimesNoSuccess, False)
 
-        fig, ax = plt.subplots()
-        ax.set_title(f'Ricerca {self.dictionary._baseDS}')
         dimSuccess = [i['size'] for i in searchTimes]
         timeSuccess = [i['time'] for i in searchTimes]
         dimNoSuccess = [i['size'] for i in searchTimesNoSuccess]
@@ -106,19 +142,73 @@ class Tester:
             deleteTime.append(testDelete(self.dictionary, keys[randint(0, len(keys) - 1)]))
             size *= self.step
 
-        fig, ax = plt.subplots()
-        ax.set_title(f'Cancellazione {self.dictionary._baseDS}')
-        dim = [i['size'] for i in deleteTime]
-        time = [i['time'] for i in deleteTime]
+    def insertAvg(self, points):
+        plot_title = f'Inserimento avg {self.dictionary._baseDS}'
+        plot_name = f"{self.dictionary._baseDS}_insertAvg.png"
+        result = []
+        for size in range(self.minSize, 10000, 333):
+            keys = self.dataGenerator.generateKey(size + 1)
+            result.append(
+                testAverage(self.dictionary, self.dictionary.insertKV, keys[:size], self.nIter, keys[size], 1))
+        xValue = [i['size'] for i in result]
+        yValue = [i['avgTime'] for i in result]
+        if points:
+            generatePlot(xValue, yValue, plot_title, plot_name, True, points=True)
+        else:
+            generatePlot(xValue, yValue, plot_title, plot_name, True)
 
-        ax.plot(dim, time)
-        ax.set_xlabel('Numero di elementi')
-        ax.set_ylabel('Tempo')
+    def searchAvg(self, points):
+        plot_title = f'Ricerca avg {self.dictionary._baseDS}'
+        plot_name = f"{self.dictionary._baseDS}_searchAvg.png"
+        # Ricerca con successo
+        success = []
+        for size in range(self.minSize, 10000, 333):
+            keys = self.dataGenerator.generateKey(size)
+            success.append(
+                testAverage(self.dictionary, self.dictionary.search, keys, self.nIter, keys[randint(0, len(keys) - 1)]))
+        # Ricerca senza successo
+        unsuccess = []
+        for size in range(self.minSize, 10000, 333):
+            keys = self.dataGenerator.generateKey(size)
+            unsuccess.append(testAverage(self.dictionary, self.dictionary.search, keys, self.nIter, -1))
+        xValue = [i['size'] for i in success]
+        yValueSucc = [i['avgTime'] for i in success]
+        yValueUnsucc = [i['avgTime'] for i in unsuccess]
+        if points:
+            generateTwoFuncPlot(xValue, yValueSucc, yValueUnsucc, 'successo', 'senza successo', plot_title, plot_name,
+                                True, points=True)
+        else:
+            generateTwoFuncPlot(xValue, yValueSucc, yValueUnsucc, 'successo', 'senza successo', plot_title, plot_name,
+                                True)
 
-        print(f"Generating plot {plot_name}")
-        plt.savefig(f"../plot/{plot_name}")
+    def deleteAvg(self, points):
+        plot_title = f'Cancellazione avg {self.dictionary._baseDS}'
+        plot_name = f"{self.dictionary._baseDS}_deleteAvg.png"
+        result = []
+        for size in range(self.minSize, 10000, 333):
+            keys = self.dataGenerator.generateKey(size)
+            result.append(
+                testAverage(self.dictionary, self.dictionary.delete, keys, self.nIter, keys[randint(0, len(keys) - 1)]))
+        xValue = [i['size'] for i in result]
+        yValue = [i['avgTime'] for i in result]
+        if points:
+            generatePlot(xValue, yValue, plot_title, plot_name, True, points=True)
+        else:
+            generatePlot(xValue, yValue, plot_title, plot_name, True)
 
-    def runAllTest(self):
+    def runNA_Test(self):
+        """Fa partire tutti i test senza la misura del tempo medio"""
         self.insert()
         self.search()
         self.delete()
+
+    def runAllAvgTest(self, points=False):
+        """Fa partire tutti i test con la misura del tempo medio"""
+        self.insertAvg(points)
+        self.searchAvg(points)
+        self.deleteAvg(points)
+
+    def runAllTest(self):
+        """Fa partire tutti i test"""
+        self.runNA_Test()
+        self.runAllAvgTest()
