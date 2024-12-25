@@ -41,7 +41,7 @@ class OtherTest(unittest.TestCase):
             self.tree.search(100)
         self.tree.search(30)
         node = BSTNode(92,1)
-        self.tree.insert(node)
+        self.tree._insert(node)
         foundNode = self.tree.search(92)
         self.assertIs(node, foundNode)
 

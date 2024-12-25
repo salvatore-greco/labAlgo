@@ -84,4 +84,7 @@ def testAverage(dictionary: Dictionary, function, keys, nIter,*args):
     result['avgTime'] = time / nIter
     print(f'time/iter: {time/nIter}')
     result['size'] = size
+    if isinstance(dictionary._baseDS, HashTable):
+        (loadfactor, _) = dictionary._baseDS.getLoadFactors()
+        result['loadFactor'] = loadfactor
     return result

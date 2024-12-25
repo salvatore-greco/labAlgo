@@ -3,7 +3,7 @@ from baseDS.DataStructure import DataStructure, DataStructureElement
 from typing import List
 
 
-# TODO: Testare questa fantastica struttura dati (come hai fatto con le altre)
+
 
 class Element(DataStructureElement):
     def __init__(self, key, value):
@@ -67,9 +67,9 @@ class HashTable(DataStructure):
         self._m = newDimension
 
     def insertKV(self, key, value):
-        self.insert(Element(key, value))
+        self._insert(Element(key, value))
 
-    def insert(self, element):
+    def _insert(self, element):
         """
         Funzione che inserisce un elemento nella hash table
         :param element: Elemento (tipo Element) da inserire

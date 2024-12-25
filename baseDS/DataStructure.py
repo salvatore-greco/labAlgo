@@ -22,7 +22,7 @@ class DataStructureElement:
 
 class DataStructure(ABC):
     @abstractmethod
-    def insert(self, element: DataStructureElement):
+    def _insert(self, element: DataStructureElement):
         """Insert element in the data structure"""
 
     @abstractmethod

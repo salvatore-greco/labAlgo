@@ -12,24 +12,17 @@ from tester import Tester
 import pickle
 
 if __name__ == '__main__':
+    tester = Tester(LinkedList(), keys=False, filename='keys24.p')
+    tester.runAllAvgTest()
 
-    tester = Tester(LinkedList())
-    tester.runAllTest()
+    tester = Tester(HashTable(), keys=False, filename='keys24.p')
+    tester.insert()
+    tester.searchAvg(False)
+    tester.deleteAvg(False)
 
-    tester = Tester(HashTable())
-    tester.runAllTest()
-
-    tester = Tester(BST())
-    tester.runAllTest()
-
-    # Search test con successo
-
-    # plt.show()
-
-    # keyR = np.arange(1,10000)
-    # times = testInsert(dictionary,keyR, value)
-    # plt.figure()
-    # plt.plot(range(0, len(times)), times)
-    # plt.show()
+    tester = Tester(BST(), keys=False, filename='keys24.p')
+    tester.runAllAvgTest()
+    tester.insertAvg(ordered=True, points=False)
 
 
+    print('Finito!')

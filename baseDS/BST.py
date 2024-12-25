@@ -11,7 +11,7 @@ class BST(DataStructure):
     def getRoot(self):
         return self._root
 
-    def insert(self, node: BSTNode):
+    def _insert(self, node: BSTNode):
         """
         Helper function per inserire un nodo già fatto nell'ABR
         :param node: BSTNode
@@ -41,7 +41,7 @@ class BST(DataStructure):
         :return:
         """
         node = BSTNode(key, value)
-        self.insert(node)
+        self._insert(node)
 
     def search(self, target):
         """

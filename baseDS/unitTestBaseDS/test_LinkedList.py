@@ -11,12 +11,12 @@ from baseDS.LinkedList import LinkedList, Element
 class LinkedListTest(unittest.TestCase):
     def setUp(self):
         self.list = LinkedList()
-        self.list.insert(element=Element(1, 2))
-        self.list.insert(element=Element(3, 2))
+        self.list._insert(element=Element(1, 2))
+        self.list._insert(element=Element(3, 2))
 
     def test_insert(self):
         self.assertEqual(self.list._head.getKey(), 3)
-        self.list.insert(element=Element(4, 2))
+        self.list._insert(element=Element(4, 2))
         self.assertEqual(self.list._head.getKey(), 4)
         self.assertEqual(self.list._head.getNext().getKey(), 3)
 
@@ -29,7 +29,7 @@ class LinkedListTest(unittest.TestCase):
     def test_delete(self):
         self.list.delete(3)
         self.assertEqual(self.list._head.getKey(), 1)
-        self.list.insert(element=Element(3, 2))
+        self.list._insert(element=Element(3, 2))
         self.list.delete(1)
         with self.assertRaises(KeyError):
             self.list.search(1)

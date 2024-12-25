@@ -31,9 +31,9 @@ class LinkedList(DataStructure):
         return self._head
 
     def insertKV(self, key, value):
-        self.insert(Element(key, value))
+        self._insert(Element(key, value))
 
-    def insert(self, element: Element):
+    def _insert(self, element: Element):
         if self._head is None:
             self._head = element
         else:

@@ -24,7 +24,7 @@ class InsertTest(unittest.TestCase):
     def test_insert(self):
         value = [10, 15, 2 , 1000, 7]
         for item in value:
-            self.hashTable.insert(Element(item, 1))
+            self.hashTable._insert(Element(item, 1))
 
         self.assertEqual(self.hashTable._n, len(value))
         self.assertEqual(self.hashTable._m, len(self.hashTable._table))
@@ -35,7 +35,7 @@ class OtherTest(unittest.TestCase):
         self.hashTable = HashTable()
         value = [10, 15, 2, 1000, 7]
         for item in value:
-            self.hashTable.insert(Element(item, 1))
+            self.hashTable._insert(Element(item, 1))
 
     def test_search(self):
         self.hashTable.search(10)
@@ -46,7 +46,7 @@ class OtherTest(unittest.TestCase):
         self.hashTable.delete(10)
         with self.assertRaises(KeyError):
             self.hashTable.search(10)
-        self.hashTable.insert(Element(23,1))
+        self.hashTable._insert(Element(23, 1))
         self.assertEqual(self.hashTable._table[h(23,0, self.hashTable._m)].getKey(), 23)
 
 if __name__ == '__main__':
