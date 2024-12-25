@@ -1,4 +1,3 @@
-from baseDS.HashTable import HashTable
 from dataGenerator import DataGenerator
 from test import *
 from dictionary import Dictionary

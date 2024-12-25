@@ -1,7 +1,5 @@
 from timeit import default_timer as timer
 
-import numpy as np
-
 from baseDS.HashTable import HashTable
 
 from dictionary import Dictionary
